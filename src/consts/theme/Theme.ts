@@ -16,7 +16,9 @@ const Theme = {
       FIRST: '#261c12',
     },
     BLUE: '#00c2ff',
-    GREEN: '#00cb14',
+    GREEN: '#5ea25f',
+    RED: '#d5715b',
+    YELLOW: '#f8c569',
   },
 };
 export default Theme;

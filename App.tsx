@@ -21,19 +21,9 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <PaperProvider theme={AppTheme}>
-          <SafeAreaView
-            style={{ flex: 1, backgroundColor: AppTheme.colors.background }}
-            edges={['top', 'bottom']}
-          >
-            <StatusBar
-              translucent={false}
-              backgroundColor={AppTheme.colors.background}
-              barStyle="dark-content"
-            />
-            <NavigationContainer theme={AppTheme}>
-              <NavigationProvider.ROOT />
-            </NavigationContainer>
-          </SafeAreaView>
+          <NavigationContainer theme={AppTheme}>
+            <NavigationProvider.ROOT />
+          </NavigationContainer>
         </PaperProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
