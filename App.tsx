@@ -1,45 +1,43 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import 'react-native-gesture-handler';
+import './global.css';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { MD3LightTheme, PaperProvider } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+import NavigationProvider from './src/navigations/Provider';
+const AppTheme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    background: '#ffffff',
   },
-});
+};
+const App = () => {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <PaperProvider theme={AppTheme}>
+          <SafeAreaView
+            style={{ flex: 1, backgroundColor: AppTheme.colors.background }}
+            edges={['top', 'bottom']}
+          >
+            <StatusBar
+              translucent={false}
+              backgroundColor={AppTheme.colors.background}
+              barStyle="dark-content"
+            />
+            <NavigationContainer theme={AppTheme}>
+              <NavigationProvider.ROOT />
+            </NavigationContainer>
+          </SafeAreaView>
+        </PaperProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+};
 
 export default App;
