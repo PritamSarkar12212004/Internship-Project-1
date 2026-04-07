@@ -6,5 +6,12 @@ const RoutesPath = {
       MAIN_SCREEN_PATH: 'splash_main_screen',
     },
   },
+  AUTH_PATH: {
+    ROOT_PATH: 'auth_root_navigation',
+    SCREEN_PATH: {
+      AUTH_FLOW: 'auth_flow_screen',
+      SSIGNUP_FLOW: 'auth_signup_screen',
+    },
+  },
 };
 export default RoutesPath;

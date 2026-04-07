@@ -1,6 +1,6 @@
 const Theme = {
   BUTTONS: {
-    First: '##d5715b',
+    First: '#d5715b',
     Secound: '#f8c569',
     Third: '#5ea25f',
   },
