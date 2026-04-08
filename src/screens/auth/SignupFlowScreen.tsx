@@ -20,7 +20,7 @@ const SignupFlowScreen = () => {
   const [currentData, setCurrentData] = useState<SignUpInterfaceType | null>(
     null,
   );
-  const [currentIndex, setCurrentIndex] = useState(3);
+  const [currentIndex, setCurrentIndex] = useState(4);
   const [funLoader, setFunLoader] = useState<boolean>(false);
   const [signupData, setSignUpdata] = useState<SignupFormState | null>({
     SignupData: {
@@ -47,6 +47,15 @@ const SignupFlowScreen = () => {
   useEffect(() => {
     setCurrentData(data[currentIndex]);
   }, [currentIndex]);
+  if (currentData?.State === 'Done') {
+    return (
+      <LayoutProvider.WRAPERS.AUTH
+        bgColor={ConstProvider.THEME.BACKGROUND.LIGHT.FIRST}
+      >
+        <ComProviderr.AUTH.DoneScreenCom />
+      </LayoutProvider.WRAPERS.AUTH>
+    );
+  }
   return (
     <LayoutProvider.WRAPERS.AUTH
       bgColor={ConstProvider.THEME.BACKGROUND.LIGHT.FIRST}

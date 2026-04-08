@@ -2,6 +2,8 @@ import MainButton from './buttons/splash/MainButton';
 import AuthMainButton from './buttons/auth/MainButton';
 import SubButton from './buttons/splash/SubButton';
 import DateTimeSelector from './auth/DateTimeSelector';
+
+import DoneScreen from './auth/DoneScreen';
 import AtchMent from './auth/AtchMent';
 import Tost from './global/Tost';
 import Icon from './global/Icon';
@@ -18,6 +20,7 @@ const Provider = {
   AUTH: {
     ATCHMENT: AtchMent,
     DateTimeSelector: DateTimeSelector,
+    DoneScreenCom: DoneScreen,
   },
   GLOBAL: {
     ICON: Icon,

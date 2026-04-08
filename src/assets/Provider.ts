@@ -4,6 +4,7 @@ import SecoundSplash from './splash/SecoundSplash';
 import ThirdSplash from './splash/ThirdSplash';
 import Google from './auth/GoogleAuthIcon';
 import Facebook from './auth/FaceBookAuthIcon';
+import DoneImg from './auth/DoneImg';
 const Provider = {
   IMAGE: {
     SPLASH: {
@@ -15,6 +16,7 @@ const Provider = {
       GOOGLE: Google,
       APPLE: Apple,
       FACEBOOK: Facebook,
+      DoneImg: DoneImg,
     },
   },
 };

@@ -187,7 +187,7 @@ const SignupScreenData = [
     Page: 5,
     Heading: 'Done',
     SubHeading: null,
-    State: null,
+    State: 'Done',
     Attachment: false,
     LoginOptions: null,
     Input: null,
