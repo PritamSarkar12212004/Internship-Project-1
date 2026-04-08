@@ -13,5 +13,11 @@ const RoutesPath = {
       SSIGNUP_FLOW: 'auth_signup_screen',
     },
   },
+  MAIN_PATH: {
+    ROOT_PATH: 'main_root_navigation',
+    SCREEN_PATH: {
+      MAIN_SCREEN: 'main_screen',
+    },
+  },
 };
 export default RoutesPath;

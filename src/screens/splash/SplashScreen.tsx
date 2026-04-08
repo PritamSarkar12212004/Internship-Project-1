@@ -8,7 +8,6 @@ import ComponentProvider from '../../components/Provider';
 import FuncProvider from '../../functions/Provider';
 
 const SplashScreen = ({ navigation }: any) => {
-  // state hooks
   const [currentData, setCurrentData] = useState<{
     topic: string;
     dis: string;
@@ -20,11 +19,10 @@ const SplashScreen = ({ navigation }: any) => {
   } | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const swipeRef = useRef<any>(null);
-  // data provider
+
   const data = DataProvider.SplashData;
   const ComponentImg = currentData?.IMG;
 
-  // actions
   const RightAction = () => {
     return (
       <View
@@ -69,12 +67,10 @@ const SplashScreen = ({ navigation }: any) => {
     navigation.navigate(ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH);
   };
 
-  // effects
   useEffect(() => {
     setCurrentData(data[currentIndex]);
   }, [currentIndex]);
 
-  // conditions
   if (!data || !currentData) {
     return <View />;
   }

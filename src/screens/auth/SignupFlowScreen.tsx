@@ -2,6 +2,7 @@ import LayoutProvider from '../../layout/Provider';
 import React, { useState } from 'react';
 import ConstProvider from '../../consts/Provider';
 import {
+  ActivityIndicator,
   KeyboardTypeOptions,
   KeyboardAvoidingView,
   Platform,
@@ -16,6 +17,7 @@ import DataProvider from '../../data/Provider';
 import Icon from '../../components/global/Icon';
 import DropDown from '../../components/dropdown/auth/DropDown';
 import { SignupFormState } from '../../types/Auth/SignUpStateInterface';
+import HookProvider from '../../hooks/Provider';
 
 type SignupSectionKey = keyof SignupFormState['SignupData'];
 type FarmInfoSectionKey = keyof SignupFormState['FarmInfo'];
@@ -23,6 +25,7 @@ type FarmInfoSectionKey = keyof SignupFormState['FarmInfo'];
 const SignupFlowScreen = ({ navigation }: any) => {
   const data = DataProvider.SignupData;
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const currentData = data[currentIndex];
   const [signupData, setSignUpdata] = useState<SignupFormState>({
     SignupData: {
@@ -226,11 +229,38 @@ const SignupFlowScreen = ({ navigation }: any) => {
     return true;
   };
 
-  const goNext = () => {
+  const goNext = async () => {
     const isValid = validateCurrentStep();
     if (!isValid) {
       return;
     }
+
+    if (currentData?.State === 'Date') {
+      try {
+        setIsSubmitting(true);
+
+        const res = await HookProvider.AUTH.SIGNUP_API({
+          data: {
+            ...signupData,
+            deviceToken: 'device-token',
+          },
+        });
+
+        if (!res) {
+          setCurrentIndex(0);
+          return;
+        }
+
+        setCurrentIndex(prev => prev + 1);
+        return;
+      } catch (error) {
+        setCurrentIndex(0);
+        return;
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+
     if (currentIndex < data.length - 1) {
       setCurrentIndex(prev => prev + 1);
     }
@@ -250,15 +280,29 @@ const SignupFlowScreen = ({ navigation }: any) => {
   };
 
   if (currentData?.State === 'Done') {
+    React.useEffect(() => {
+      const timer = setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: ConstProvider.ROUTES.MAIN_PATH.SCREEN_PATH.MAIN_SCREEN,
+            },
+          ],
+        });
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }, []);
+
     return (
       <LayoutProvider.WRAPERS.AUTH
         bgColor={ConstProvider.THEME.BACKGROUND.LIGHT.FIRST}
       >
-        <ComProviderr.AUTH.DoneScreenCom signupData={signupData} />
+        <ComProviderr.AUTH.DoneScreenCom ConstProvider={ConstProvider} />
       </LayoutProvider.WRAPERS.AUTH>
     );
   }
-
   return (
     <LayoutProvider.WRAPERS.AUTH
       bgColor={ConstProvider.THEME.BACKGROUND.LIGHT.FIRST}
@@ -390,6 +434,7 @@ const SignupFlowScreen = ({ navigation }: any) => {
               onPress={goBack}
               activeOpacity={0.8}
               className="w-2/12"
+              disabled={isSubmitting}
             >
               {currentData.Navigation.Back.Text ? (
                 <Text className="text-black text-lg font-semibold underline">
@@ -407,11 +452,16 @@ const SignupFlowScreen = ({ navigation }: any) => {
             <TouchableOpacity
               onPress={goNext}
               activeOpacity={0.8}
+              disabled={isSubmitting}
               className="bg-[#d5715b] h-full flex-auto rounded-[140px] flex items-center justify-center"
             >
-              <Text className=" text-lg font-semibold text-white ">
-                {currentData.Navigation.Forward.Button}
-              </Text>
+              {isSubmitting ? (
+                <ActivityIndicator color="#ffffff" />
+              ) : (
+                <Text className=" text-lg font-semibold text-white ">
+                  {currentData.Navigation.Forward.Button}
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         )}

@@ -25,6 +25,10 @@ const RootNavigation = () => {
         name={ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH}
         component={NavigationProvider.AUTH}
       />
+      <Stack.Screen
+        name={ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH}
+        component={NavigationProvider.MAIN}
+      />
     </Stack.Navigator>
   );
 };

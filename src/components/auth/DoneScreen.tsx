@@ -1,10 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import AssteProvider from '../../assets/Provider';
-const DoneScreen = ({ signupData }: any) => {
-  const MakeProfile = () => {
-    console.log(signupData);
-  };
+import { useNavigation } from '@react-navigation/native';
+const DoneScreen = ({ ConstProvider }: any) => {
+  const navigation = useNavigation();
   return (
     <View className="flex-1  flex items-center justify-end pb-6 gap-72">
       <View className="w-full flex items-center px-4 gap-8">
@@ -20,7 +19,16 @@ const DoneScreen = ({ signupData }: any) => {
       </View>
       <View className="w-full">
         <TouchableOpacity
-          onPress={() => MakeProfile()}
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: ConstProvider.ROUTES.MAIN_PATH.SCREEN_PATH.MAIN_SCREEN,
+                },
+              ],
+            })
+          }
           activeOpacity={0.8}
           className="bg-[#d5715b] h-16 flex-auto rounded-[140px] flex items-center justify-center"
         >
