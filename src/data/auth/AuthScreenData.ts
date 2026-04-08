@@ -62,6 +62,7 @@ const AuthScreenData = [
   {
     Page: 2,
     Head: 'Forgot Password?',
+    state: 'forget',
     Helper: {
       Support: 'Remember your pasword?  Login',
       Action: 'Login',
@@ -92,6 +93,25 @@ const AuthScreenData = [
 
   {
     Page: 3,
+    Head: 'Verify OTP',
+    state: 'verify',
+    Helper: {
+      Support: 'Remember your pasword? ',
+      Action: 'Login',
+    },
+    Input: [],
+    Button: {
+      MainButton: {
+        Head: 'Submit',
+        Function: () => {},
+      },
+      SubButton: null,
+      OptionButton: null,
+    },
+  },
+  {
+    Page: 4,
+    state: 'reset',
     Head: 'Reset Password',
     Helper: {
       Support: 'Remember your pasword?  Login',

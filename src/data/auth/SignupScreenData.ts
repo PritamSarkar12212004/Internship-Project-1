@@ -23,8 +23,8 @@ const SignupScreenData = [
     Input: [
       {
         Type: 'Full Name',
-        state: 'name',
-        keyboard: 'defualt',
+        state: 'FullName',
+        keyboard: 'default',
         Icon: {
           name: 'user',
           color: 'gray',
@@ -33,7 +33,7 @@ const SignupScreenData = [
       },
       {
         Type: 'Email Address',
-        state: 'email',
+        state: 'Email',
         keyboard: 'email-address',
         Icon: {
           name: 'at',
@@ -43,7 +43,7 @@ const SignupScreenData = [
       },
       {
         Type: 'Phone Number',
-        state: 'phoneNumber',
+        state: 'Phone',
         keyboard: 'phone-pad',
         Icon: {
           name: 'phone',
@@ -53,7 +53,7 @@ const SignupScreenData = [
       },
       {
         Type: 'New Password',
-        state: 'newPass',
+        state: 'Password',
         keyboard: 'default',
         Icon: {
           name: 'lock',
@@ -63,7 +63,7 @@ const SignupScreenData = [
       },
       {
         Type: 'Confirm New Password',
-        state: 'ConformPass',
+        state: 'ConPassword',
         keyboard: 'default',
         Icon: {
           name: 'lock',
@@ -93,8 +93,8 @@ const SignupScreenData = [
     Input: [
       {
         Type: 'Business Name',
-        state: 'businessName',
-        keyboard: 'defualt',
+        state: 'BussnessName',
+        keyboard: 'default',
         Icon: {
           name: 'pen-to-square',
           color: 'gray',
@@ -103,8 +103,8 @@ const SignupScreenData = [
       },
       {
         Type: 'Informal Name',
-        state: 'informalName',
-        keyboard: 'defualt',
+        state: 'InformalName',
+        keyboard: 'default',
         Icon: {
           name: 'at',
           color: 'gray',
@@ -113,8 +113,8 @@ const SignupScreenData = [
       },
       {
         Type: 'Street Address',
-        state: 'address',
-        keyboard: 'defualt',
+        state: 'StreetAddress',
+        keyboard: 'default',
         Icon: {
           name: 'home',
           color: 'gray',
@@ -123,7 +123,7 @@ const SignupScreenData = [
       },
       {
         Type: 'City',
-        state: 'city',
+        state: 'City',
         keyboard: 'default',
         Icon: {
           name: 'location',

@@ -1,8 +1,8 @@
-type opTionButton = {
+export type opTionButton = {
   icon: any;
   Function: () => void;
 };
-type InputField = {
+export type InputField = {
   Type: string;
   keyboard: any;
   state: string;
@@ -17,14 +17,14 @@ type InputField = {
   } | null;
 };
 
-type AuthPage = {
+export type AuthPage = {
   Page: number;
-  state: string;
+  state?: string;
   Head: string;
   Helper: {
     Support: string;
     Action: string;
-    Function: () => void;
+    Function?: () => void;
   };
   Input: InputField[];
   Button: {
@@ -33,6 +33,6 @@ type AuthPage = {
       Function: () => void;
     };
     SubButton: null;
-    OptionButton: opTionButton[];
+    OptionButton: opTionButton[] | null;
   };
 };

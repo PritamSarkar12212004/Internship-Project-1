@@ -1,7 +1,10 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import AssteProvider from '../../assets/Provider';
-const DoneScreen = () => {
+const DoneScreen = ({ signupData }: any) => {
+  const MakeProfile = () => {
+    console.log(signupData);
+  };
   return (
     <View className="flex-1  flex items-center justify-end pb-6 gap-72">
       <View className="w-full flex items-center px-4 gap-8">
@@ -17,6 +20,7 @@ const DoneScreen = () => {
       </View>
       <View className="w-full">
         <TouchableOpacity
+          onPress={() => MakeProfile()}
           activeOpacity={0.8}
           className="bg-[#d5715b] h-16 flex-auto rounded-[140px] flex items-center justify-center"
         >

@@ -12,6 +12,10 @@ interface DayData {
   Index: number;
   Time: TimeSlot[];
 }
+interface SelectedDayTiming {
+  Day: string;
+  Time: TimeSlot[];
+}
 const ShowDay = ({
   item,
   selected,
@@ -33,22 +37,75 @@ const ShowDay = ({
     </TouchableOpacity>
   );
 };
-const ShowTime = ({ item }: { item: TimeSlot }) => {
+const ShowTime = ({
+  item,
+  selected,
+  onPress,
+}: {
+  item: TimeSlot;
+  selected: boolean;
+  onPress: () => void;
+}) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       activeOpacity={0.8}
-      className="h-16 bg-[#eeedec] rounded-xl items-center justify-center"
+      className={`h-16 rounded-xl items-center justify-center ${
+        selected ? 'bg-[#d5715b]' : 'bg-[#eeedec]'
+      }`}
     >
-      <Text>
+      <Text className={selected ? 'text-white' : 'text-black'}>
         {item.Start} - {item.End}
       </Text>
     </TouchableOpacity>
   );
 };
 
-const DateTimeSelector = () => {
+const DateTimeSelector = ({
+  value,
+  onChange,
+}: {
+  value: SelectedDayTiming[];
+  onChange: (next: SelectedDayTiming[]) => void;
+}) => {
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const selectedDay = DataProvider.DatePickerData[selectedDayIndex];
+  const selectedMap = React.useMemo(() => {
+    return value.reduce<Record<string, TimeSlot[]>>((acc, entry) => {
+      acc[entry.Day] = entry.Time;
+      return acc;
+    }, {});
+  }, [value]);
+
+  const isDaySelected = (day: string) => {
+    return Boolean(selectedMap[day]?.length);
+  };
+
+  const isTimeSelected = (day: string, slot: TimeSlot) => {
+    const daySlots = selectedMap[day] ?? [];
+    return daySlots.some(
+      item => item.Start === slot.Start && item.End === slot.End,
+    );
+  };
+
+  const toggleTimeSlot = (day: string, slot: TimeSlot) => {
+    const currentSlots = selectedMap[day] ?? [];
+    const exists = currentSlots.some(
+      item => item.Start === slot.Start && item.End === slot.End,
+    );
+    const nextSlots = exists
+      ? currentSlots.filter(
+          item => !(item.Start === slot.Start && item.End === slot.End),
+        )
+      : [...currentSlots, slot];
+
+    const withoutDay = value.filter(item => item.Day !== day);
+    if (!nextSlots.length) {
+      onChange(withoutDay);
+      return;
+    }
+    onChange([...withoutDay, { Day: day, Time: nextSlots }]);
+  };
 
   return (
     <View className="mt-4  w-full flex gap-10">
@@ -59,7 +116,7 @@ const DateTimeSelector = () => {
         renderItem={({ item, index }) => (
           <ShowDay
             item={item}
-            selected={index === selectedDayIndex}
+            selected={isDaySelected(item.Day) || index === selectedDayIndex}
             onPress={() => setSelectedDayIndex(index)}
           />
         )}
@@ -78,7 +135,11 @@ const DateTimeSelector = () => {
         }}
         renderItem={({ item }) => (
           <View className="w-[48%]">
-            <ShowTime item={item} />
+            <ShowTime
+              item={item}
+              selected={isTimeSelected(selectedDay.Day, item)}
+              onPress={() => toggleTimeSlot(selectedDay.Day, item)}
+            />
           </View>
         )}
       />

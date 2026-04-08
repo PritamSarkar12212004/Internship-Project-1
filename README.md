@@ -7,3 +7,5 @@ add react native paper for morden components
 add react native navigation / stack navigation
 add react-native-toast-message' for in app popup
 add react-native-orientation-locker for control app oriantation
+add react native svg to use svg Assets
+add mmkv for sorte data in the stroage 

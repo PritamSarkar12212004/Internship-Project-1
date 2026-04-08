@@ -5,7 +5,9 @@ import LayoutProvider from '../../layout/Provider';
 import DataProvider from '../../data/Provider';
 import ConstProvider from '../../consts/Provider';
 import ComponentProvider from '../../components/Provider';
-const SplashScreen = () => {
+import FuncProvider from '../../functions/Provider';
+
+const SplashScreen = ({ navigation }: any) => {
   // state hooks
   const [currentData, setCurrentData] = useState<{
     topic: string;
@@ -55,6 +57,16 @@ const SplashScreen = () => {
     }
 
     swipeRef.current?.close();
+  };
+
+  const finishSplash = () => {
+    FuncProvider.STORAGE.SPLASH.MARK_COMPLETE();
+    const parentNavigation = navigation.getParent?.();
+    if (parentNavigation) {
+      parentNavigation.replace(ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH);
+      return;
+    }
+    navigation.navigate(ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH);
   };
 
   // effects
@@ -111,9 +123,11 @@ const SplashScreen = () => {
               <ComponentProvider.BUTTONS.SPLASH.MAIN_BUTTON
                 btColor={currentData.bg_color}
                 btContent={currentData.button_content}
+                onPress={finishSplash}
               />
               <ComponentProvider.BUTTONS.SPLASH.SUB_BUTTON
                 btContent={'Login'}
+                onPress={finishSplash}
               />
             </View>
           </View>

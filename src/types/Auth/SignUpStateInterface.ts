@@ -1,11 +1,11 @@
 interface TimeSlot {
-  Start: string | null;
-  End: string | null;
+  Start: string;
+  End: string;
 }
 
 interface BusinessDayTiming {
-  Day: string | null;
-  Time: TimeSlot[] | null;
+  Day: string;
+  Time: TimeSlot[];
 }
 interface SignupSection {
   FullName: string | null;
@@ -32,6 +32,6 @@ export interface SignupFormState {
   SignupData: SignupSection;
   FarmInfo: FarmInfoSection;
   Verification: VerificationSection;
-  BussnessTiming: BusinessDayTiming[] | null;
+  BussnessTiming: BusinessDayTiming[];
 }
 
