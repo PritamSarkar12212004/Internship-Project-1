@@ -5,7 +5,7 @@ const Stack = createStackNavigator();
 const AuthNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName={ConstProvider.ROUTES.AUTH_PATH.SCREEN_PATH.AUTH_FLOW}
+      initialRouteName={ConstProvider.ROUTES.AUTH_PATH.SCREEN_PATH.SSIGNUP_FLOW}
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',

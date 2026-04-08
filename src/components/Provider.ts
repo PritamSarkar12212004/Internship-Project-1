@@ -1,6 +1,8 @@
 import MainButton from './buttons/splash/MainButton';
 import AuthMainButton from './buttons/auth/MainButton';
 import SubButton from './buttons/splash/SubButton';
+import DateTimeSelector from './auth/DateTimeSelector';
+import AtchMent from './auth/AtchMent';
 import Tost from './global/Tost';
 import Icon from './global/Icon';
 const Provider = {
@@ -13,7 +15,10 @@ const Provider = {
       MAIN_BUTTON: AuthMainButton,
     },
   },
-
+  AUTH: {
+    ATCHMENT: AtchMent,
+    DateTimeSelector: DateTimeSelector,
+  },
   GLOBAL: {
     ICON: Icon,
     TOST: Tost,

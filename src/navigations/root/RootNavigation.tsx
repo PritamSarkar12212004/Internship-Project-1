@@ -9,6 +9,7 @@ const RootNavigation = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+        gestureEnabled: true,
       }}
     >
       <Stack.Screen

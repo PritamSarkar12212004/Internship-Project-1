@@ -6,7 +6,9 @@ import { TextInput } from 'react-native-gesture-handler';
 import ComProviderr from '../../components/Provider';
 import DataProvider from '../../data/Provider';
 import FuncProvider from '../../functions/Provider';
-const AuthFlowScreen = () => {
+import RoutesPath from '../../consts/routes/RoutesPath';
+
+const AuthFlowScreen = ({ navigation }: any) => {
   const [currentData, setCurrentData] = useState<AuthPage | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [LoginData, setLoginData] = useState<{
@@ -61,11 +63,15 @@ const AuthFlowScreen = () => {
             <Text className="opacity-70">{currentData?.Helper.Support}</Text>
             <TouchableOpacity
               onPress={() =>
-                FuncProvider.AUTH.INDEX_CHANGER({
-                  state: 'login',
-                  setCurrentIndex: setCurrentIndex,
-                  setLoginData: setLoginData,
-                })
+                currentData?.state === 'login'
+                  ? navigation.navigate(
+                      RoutesPath.AUTH_PATH.SCREEN_PATH.SSIGNUP_FLOW,
+                    )
+                  : FuncProvider.AUTH.INDEX_CHANGER({
+                      state: 'login',
+                      setCurrentIndex: setCurrentIndex,
+                      setLoginData: setLoginData,
+                    })
               }
               activeOpacity={0.8}
             >
