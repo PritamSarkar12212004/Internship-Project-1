@@ -20,7 +20,7 @@ import { SignupFormState } from '../../types/Auth/SignUpStateInterface';
 type SignupSectionKey = keyof SignupFormState['SignupData'];
 type FarmInfoSectionKey = keyof SignupFormState['FarmInfo'];
 
-const SignupFlowScreen = () => {
+const SignupFlowScreen = ({ navigation }: any) => {
   const data = DataProvider.SignupData;
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentData = data[currentIndex];
@@ -169,15 +169,24 @@ const SignupFlowScreen = () => {
         ZipCode,
       } = signupData.FarmInfo;
       if (!BussnessName?.trim()) {
-        showInfoToast('Business Name is required', 'Please enter business name');
+        showInfoToast(
+          'Business Name is required',
+          'Please enter business name',
+        );
         return false;
       }
       if (!InformalName?.trim()) {
-        showInfoToast('Informal Name is required', 'Please enter informal name');
+        showInfoToast(
+          'Informal Name is required',
+          'Please enter informal name',
+        );
         return false;
       }
       if (!StreetAddress?.trim()) {
-        showInfoToast('Street Address is required', 'Please enter street address');
+        showInfoToast(
+          'Street Address is required',
+          'Please enter street address',
+        );
         return false;
       }
       if (!City?.trim()) {
@@ -196,14 +205,20 @@ const SignupFlowScreen = () => {
 
     if (currentData.State === 'verification') {
       if (!signupData.Verification.Doc) {
-        showInfoToast('Document required', 'Please select registration document');
+        showInfoToast(
+          'Document required',
+          'Please select registration document',
+        );
         return false;
       }
     }
 
     if (currentData.State === 'Date') {
       if (!signupData.BussnessTiming.length) {
-        showInfoToast('Business Hours required', 'Please select at least one slot');
+        showInfoToast(
+          'Business Hours required',
+          'Please select at least one slot',
+        );
         return false;
       }
     }
@@ -222,6 +237,13 @@ const SignupFlowScreen = () => {
   };
 
   const goBack = () => {
+    if (
+      currentIndex === 0 &&
+      currentData?.Navigation?.Back?.Text?.toLowerCase() === 'login'
+    ) {
+      navigation.goBack();
+      return;
+    }
     if (currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
     }
@@ -301,8 +323,10 @@ const SignupFlowScreen = () => {
                 {currentData?.Input?.map((item, index) => {
                   const isSignupPage = currentData.State === 'name';
                   const value = isSignupPage
-                    ? signupData.SignupData[item.state as SignupSectionKey] ?? ''
-                    : signupData.FarmInfo[item.state as FarmInfoSectionKey] ?? '';
+                    ? (signupData.SignupData[item.state as SignupSectionKey] ??
+                      '')
+                    : (signupData.FarmInfo[item.state as FarmInfoSectionKey] ??
+                      '');
 
                   return (
                     <View
@@ -346,7 +370,9 @@ const SignupFlowScreen = () => {
                   <DropDown
                     selectedState={signupData.FarmInfo.State ?? ''}
                     zipCode={signupData.FarmInfo.ZipCode ?? ''}
-                    onSelectState={value => handleFarmInfoChange('State', value)}
+                    onSelectState={value =>
+                      handleFarmInfoChange('State', value)
+                    }
                     onChangeZipCode={value =>
                       handleFarmInfoChange('ZipCode', value)
                     }
