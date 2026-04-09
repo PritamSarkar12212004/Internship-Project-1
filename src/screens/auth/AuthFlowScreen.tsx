@@ -12,7 +12,7 @@ import { AuthPage } from '../../types/Auth/AuthTypes';
 type AuthFlowScreenProps = {
   navigation: any;
 };
-
+ 
 type LoginState = {
   login: {
     email: string | null;
@@ -50,7 +50,8 @@ const initialLoginData: LoginState = {
 const AuthFlowScreen = ({ navigation }: AuthFlowScreenProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loginData, setLoginData] = useState<LoginState>(initialLoginData);
-  const [funLoader] = useState<boolean>(false);
+  const [funLoader, setFunLoader] = useState<boolean>(false);
+  const [resetToken, setResetToken] = useState<string | null>(null);
   const otpInputRef = useRef<any>(null);
 
   const data = DataProvider.AuthData;
@@ -150,8 +151,11 @@ const AuthFlowScreen = ({ navigation }: AuthFlowScreenProps) => {
         return null;
       }
       return FuncProvider.AUTH.FORM_SUBMIT.LOGIN_SUBMIT({
-        email: loginData.login.email,
-        password: loginData.login.password,
+        email,
+        password,
+        setFunLoader,
+        navigation,
+        RoutesPath,
       });
     }
 
@@ -161,20 +165,27 @@ const AuthFlowScreen = ({ navigation }: AuthFlowScreenProps) => {
         showInfoToast('Phone is required', 'Enter valid phone number');
         return null;
       }
-      showInfoToast('Code Sent', 'Verification code sent to your phone');
-      setCurrentIndex(2);
-      return null;
+      return FuncProvider.AUTH.FORM_SUBMIT.FORGOT_PASSWORD_SUBMIT({
+        mobile: phone,
+        setFunLoader,
+        onSuccess: () => setCurrentIndex(2),
+      });
     }
 
     if (currentStep === 'verify') {
       const otp = loginData.verify.otp?.trim() ?? '';
-      if (otp.length !== 5) {
+      if (otp.length < 5) {
         showInfoToast('Invalid OTP', 'Please enter 5 digit OTP');
         return null;
       }
-      showInfoToast('OTP Verified', 'You can now reset your password');
-      setCurrentIndex(3);
-      return null;
+      return FuncProvider.AUTH.FORM_SUBMIT.VERIFY_OTP_SUBMIT({
+        otp,
+        setFunLoader,
+        onSuccess: (token: string) => {
+          setResetToken(token);
+          setCurrentIndex(3);
+        },
+      });
     }
 
     if (currentStep === 'reset') {
@@ -200,13 +211,27 @@ const AuthFlowScreen = ({ navigation }: AuthFlowScreenProps) => {
         showInfoToast('Password Mismatch', 'Both passwords must be same');
         return null;
       }
-      showInfoToast('Password Updated', 'Please login with new password');
-      FuncProvider.AUTH.INDEX_CHANGER({
-        state: 'login',
-        setCurrentIndex: setCurrentIndex,
-        setLoginData: setLoginData,
+
+      if (!resetToken) {
+        showInfoToast('Session Expired', 'Please verify your OTP again');
+        setCurrentIndex(2);
+        return null;
+      }
+
+      return FuncProvider.AUTH.FORM_SUBMIT.RESET_PASSWORD_SUBMIT({
+        token: resetToken,
+        password: newPass,
+        cpassword: ConformPass,
+        setFunLoader,
+        onSuccess: () => {
+          FuncProvider.AUTH.INDEX_CHANGER({
+            state: 'login',
+            setCurrentIndex: setCurrentIndex,
+            setLoginData: setLoginData,
+          });
+          setResetToken(null);
+        },
       });
-      return null;
     }
 
     return null;
@@ -323,11 +348,19 @@ const AuthFlowScreen = ({ navigation }: AuthFlowScreenProps) => {
             ) : null}
             {currentStep === 'verify' ? (
               <TouchableOpacity
-                onPress={() => showInfoToast('Code Resent', 'A new OTP was sent')}
+                onPress={() =>
+                  FuncProvider.AUTH.FORM_SUBMIT.FORGOT_PASSWORD_SUBMIT({
+                    mobile: loginData.forget.phoneNumber ?? '',
+                    setFunLoader,
+                    onSuccess: () => {},
+                  })
+                }
                 activeOpacity={0.8}
                 className="w-full mt-6 items-center"
               >
-                <Text className="text-black underline text-base">Resend Code</Text>
+                <Text className="text-black underline text-base">
+                  Resend Code
+                </Text>
               </TouchableOpacity>
             ) : null}
           </View>

@@ -9,7 +9,7 @@ import { View, ActivityIndicator } from 'react-native';
 const Stack = createStackNavigator();
 
 const RootNavigation = () => {
-  const [route, setRoute] = useState<string | null>(null);
+  const [initialRoute, setInitialRoute] = useState<string | null>(null);
 
   useEffect(() => {
     const init = () => {
@@ -17,56 +17,46 @@ const RootNavigation = () => {
       const auth = getAuthData();
 
       if (!splashDone) {
-        setRoute(ConstProvider.ROUTES.SPLASH_PATH.ROOT_PATH);
-        return;
-      }
-
-      if (auth?.token) {
-        setRoute(ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH);
+        setInitialRoute(ConstProvider.ROUTES.SPLASH_PATH.ROOT_PATH);
+      } else if (auth?.token) {
+        setInitialRoute(ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH);
       } else {
-        setRoute(ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH);
+        setInitialRoute(ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH);
       }
     };
 
     init();
   }, []);
 
-  if (!route) {
+  if (!initialRoute) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color={'orange'} />
+        <ActivityIndicator size="large" color="orange" />
       </View>
     );
   }
 
   return (
     <Stack.Navigator
+      initialRouteName={initialRoute}
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
         gestureEnabled: true,
       }}
     >
-      {route === ConstProvider.ROUTES.SPLASH_PATH.ROOT_PATH && (
-        <Stack.Screen
-          name={ConstProvider.ROUTES.SPLASH_PATH.ROOT_PATH}
-          component={NavigationProvider.Splash.Root}
-        />
-      )}
-
-      {route === ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH && (
-        <Stack.Screen
-          name={ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH}
-          component={NavigationProvider.AUTH}
-        />
-      )}
-
-      {route === ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH && (
-        <Stack.Screen
-          name={ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH}
-          component={NavigationProvider.MAIN}
-        />
-      )}
+      <Stack.Screen
+        name={ConstProvider.ROUTES.SPLASH_PATH.ROOT_PATH}
+        component={NavigationProvider.Splash.Root}
+      />
+      <Stack.Screen
+        name={ConstProvider.ROUTES.AUTH_PATH.ROOT_PATH}
+        component={NavigationProvider.AUTH}
+      />
+      <Stack.Screen
+        name={ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH}
+        component={NavigationProvider.MAIN}
+      />
     </Stack.Navigator>
   );
 };

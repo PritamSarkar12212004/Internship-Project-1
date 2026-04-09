@@ -4,14 +4,17 @@ import ConstProvider from '../../consts/Provider';
 const K = ConstProvider.KEYS.STORAGE;
 
 export const saveAuthData = (data: any) => {
-  storage.set(K.AUTH_TOKEN, data.token);
-  storage.set(K.USER, JSON.stringify(data.user));
-  storage.set(K.ACCOUNT_PREFERENCE, JSON.stringify(data.account_preference));
-  storage.set(
-    K.NOTIFICATION_SETTINGS,
-    JSON.stringify(data.notification_settings),
-  );
-  storage.set(K.IS_VERIFIED, String(data.is_verified));
+  if (data.token) storage.set(K.AUTH_TOKEN, data.token);
+  if (data.user) storage.set(K.USER, JSON.stringify(data.user));
+  if (data.account_preference)
+    storage.set(K.ACCOUNT_PREFERENCE, JSON.stringify(data.account_preference));
+  if (data.notification_settings)
+    storage.set(
+      K.NOTIFICATION_SETTINGS,
+      JSON.stringify(data.notification_settings),
+    );
+  if (data.is_verified !== undefined)
+    storage.set(K.IS_VERIFIED, String(data.is_verified));
 };
 
 export const getAuthData = () => {
