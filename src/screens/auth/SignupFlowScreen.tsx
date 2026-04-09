@@ -1,5 +1,5 @@
 import LayoutProvider from '../../layout/Provider';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ConstProvider from '../../consts/Provider';
 import {
   ActivityIndicator,
@@ -278,31 +278,18 @@ const SignupFlowScreen = ({ navigation }: any) => {
       setCurrentIndex(prev => prev - 1);
     }
   };
-
-  if (currentData?.State === 'Done') {
-    React.useEffect(() => {
+  useEffect(() => {
+    if (currentData?.State === 'Done') {
       const timer = setTimeout(() => {
         navigation.reset({
           index: 0,
-          routes: [
-            {
-              name: ConstProvider.ROUTES.MAIN_PATH.SCREEN_PATH.MAIN_SCREEN,
-            },
-          ],
+          routes: [{ name: ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH }],
         });
       }, 2000);
 
       return () => clearTimeout(timer);
-    }, []);
-
-    return (
-      <LayoutProvider.WRAPERS.AUTH
-        bgColor={ConstProvider.THEME.BACKGROUND.LIGHT.FIRST}
-      >
-        <ComProviderr.AUTH.DoneScreenCom ConstProvider={ConstProvider} />
-      </LayoutProvider.WRAPERS.AUTH>
-    );
-  }
+    }
+  }, [currentData?.State]);
   return (
     <LayoutProvider.WRAPERS.AUTH
       bgColor={ConstProvider.THEME.BACKGROUND.LIGHT.FIRST}

@@ -24,7 +24,7 @@ const DoneScreen = ({ ConstProvider }: any) => {
               index: 0,
               routes: [
                 {
-                  name: ConstProvider.ROUTES.MAIN_PATH.SCREEN_PATH.MAIN_SCREEN,
+                  name: ConstProvider.ROUTES.MAIN_PATH.ROOT_PATH,
                 },
               ],
             })
